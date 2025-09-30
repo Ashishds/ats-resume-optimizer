@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: ats-resume-optimizer
+    env: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: python api_server.py
+    envVars:
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: OPENAI_MODEL
+        value: gpt-4o-mini
+    healthCheckPath: /

@@ -4,6 +4,8 @@ import tempfile
 from fastapi import FastAPI, File, UploadFile, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import HTMLResponse
 from dotenv import load_dotenv
 from crew_app.file_tools.file_loader import detect_and_extract
 from crew_app.crew import run_pipeline
@@ -31,8 +33,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Mount static files (React build)
+if os.path.exists("build"):
+    app.mount("/static", StaticFiles(directory="build/static"), name="static")
+
 @app.get("/")
 async def root():
+    if os.path.exists("build/index.html"):
+        return FileResponse("build/index.html")
     return {"message": "ATS Resume Optimization API is running"}
 
 @app.get("/health")
@@ -154,4 +162,4 @@ async def download_pdf(content: str = Form(...), filename: str = Form("resume.pd
 if __name__ == "__main__":
     import os
     port = int(os.environ.get("PORT", 8000))
-    uvicorn.run(app, host="0.0.0.0", port=port)
+    uvicorn.run(app, host="0.0.0.0", port=port, log_level="info")
