@@ -76,12 +76,24 @@ async def process_resume(
         print(f"Processing resume for job: {job_title}")
         print(f"Resume text length: {len(raw_text)}")
         
-        # Run the CrewAI pipeline
-        cleaned, rewritten, final_resume, evaluation = run_pipeline(
-            raw_resume_text=raw_text,
-            job_title=job_title.strip(),
-            job_description=job_description.strip()
-        )
+        # Set OpenAI API key for CrewAI
+        import os
+        if openai_key:
+            os.environ["OPENAI_API_KEY"] = openai_key
+        
+        # Run the CrewAI pipeline with timeout protection
+        try:
+            cleaned, rewritten, final_resume, evaluation = run_pipeline(
+                raw_resume_text=raw_text,
+                job_title=job_title.strip(),
+                job_description=job_description.strip()
+            )
+        except Exception as pipeline_error:
+            print(f"Pipeline error: {str(pipeline_error)}")
+            raise HTTPException(
+                status_code=500, 
+                detail=f"AI processing error: {str(pipeline_error)}. Please try again with a shorter resume or job description."
+            )
         
         # Try to parse evaluation as JSON
         parsed_evaluation = None
