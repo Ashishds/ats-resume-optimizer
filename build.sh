@@ -4,7 +4,7 @@ echo "🚀 Building ATS Resume Optimizer for Render..."
 
 # Install Node.js dependencies
 echo "📦 Installing Node.js dependencies..."
-npm install
+npm install --production=false
 
 # Build React frontend
 echo "⚛️ Building React frontend..."
