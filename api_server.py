@@ -54,6 +54,16 @@ async def process_resume(
     job_description: str = Form(...)
 ):
     try:
+        # Check environment variables
+        openai_key = os.getenv("OPENAI_API_KEY")
+        openai_model = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
+        
+        print(f"OpenAI API Key present: {bool(openai_key)}")
+        print(f"OpenAI Model: {openai_model}")
+        
+        if not openai_key:
+            raise HTTPException(status_code=500, detail="OpenAI API key not found. Please check environment variables.")
+        
         # Read file content
         file_content = await file.read()
         
@@ -62,6 +72,9 @@ async def process_resume(
         
         if not raw_text.strip():
             raise HTTPException(status_code=400, detail="Could not extract text from the file")
+        
+        print(f"Processing resume for job: {job_title}")
+        print(f"Resume text length: {len(raw_text)}")
         
         # Run the CrewAI pipeline
         cleaned, rewritten, final_resume, evaluation = run_pipeline(
@@ -93,6 +106,10 @@ async def process_resume(
         }
         
     except Exception as e:
+        print(f"Error processing resume: {str(e)}")
+        print(f"Error type: {type(e).__name__}")
+        import traceback
+        traceback.print_exc()
         raise HTTPException(status_code=500, detail=f"Processing failed: {str(e)}")
 
 @app.post("/download-txt")
