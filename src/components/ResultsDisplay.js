@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Download, RotateCcw, FileText, CheckCircle, Star, AlertCircle, File } from 'lucide-react';
+import { RotateCcw, FileText, CheckCircle, Star, AlertCircle, File } from 'lucide-react';
 import { downloadFile } from '../services/api';
 
 const ResultsDisplay = ({ results, onReset }) => {
