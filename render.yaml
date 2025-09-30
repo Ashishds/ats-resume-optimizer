@@ -10,7 +10,7 @@ services:
     startCommand: python api_server.py
     envVars:
       - key: OPENAI_API_KEY
-        sync: false
+        value: YOUR_OPENAI_API_KEY_HERE
       - key: OPENAI_MODEL
         value: gpt-4o-mini
     healthCheckPath: /

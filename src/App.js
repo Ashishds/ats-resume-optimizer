@@ -31,15 +31,10 @@ function App() {
     try {
       const steps = [
         'Initializing AI agents...',
-        'Stage 1: Parsing and cleaning resume...',
-        'Stage 2: ATS optimization...',
-        'Stage 3: Keyword optimization...',
-        'Stage 4: Skills enhancement...',
-        'Stage 5: Industry-specific optimization...',
-        'Stage 6: Bullet point refinement...',
-        'Stage 7: Formatting and structure...',
-        'Stage 8: Quality assurance...',
-        'Stage 9: Final ATS evaluation...',
+        'Stage 1/4: Parsing and cleaning resume...',
+        'Stage 2/4: ATS optimization...',
+        'Stage 3/4: Bullet point refinement...',
+        'Stage 4/4: Final ATS evaluation...',
         'Complete!'
       ];
       
@@ -51,7 +46,7 @@ function App() {
         } else {
           clearInterval(stepInterval);
         }
-      }, 8000); // Update every 8 seconds
+      }, 15000); // Update every 15 seconds
       
       setLoadingStep(steps[0]);
       const response = await processResume(file, jobTitle, jobDescription);
